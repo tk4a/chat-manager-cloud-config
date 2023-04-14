@@ -9,6 +9,6 @@ spring:
       server:
         git:
           default-label: main
-          uri: ${GIT_URL}
+          uri: ${GIT_URL:https://github.com/tk4a/chat-manager-configuration}
           username: ${GIT_USERNAME}
           password: ${GIT_PASSWORD}
