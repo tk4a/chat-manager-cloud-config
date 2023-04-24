@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  discovery-service:
+    container_name: discovery-service
+    build:
+      context: /Users/artemtkachev/Documents/work_projects/chat-manager-eureka-discovery-server
+      dockerfile: Dockerfile
+    image: discovery-service:latest
+    ports:
+      - "8761:8761"
+  cloud-config:
+    depends_on:
+      - discovery-service
+    container_name: cloud-config
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: flipperzer0/cloud-config:latest
+    ports:
+      - "8888:8888"
+    networks:
+      - spring-cloud-network
+
+networks:
+  spring-cloud-network:
+    driver: bridge
