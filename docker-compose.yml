@@ -5,9 +5,17 @@ services:
     build:
       context: /Users/artemtkachev/Documents/work_projects/chat-manager-eureka-discovery-server
       dockerfile: Dockerfile
-    image: discovery-service:latest
+    image: flipperzer0/discovery-service:0.0.2
     ports:
       - "8761:8761"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 2m
+    networks:
+      - chat-bot-test-network
   cloud-config:
     depends_on:
       - discovery-service
@@ -15,12 +23,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: flipperzer0/cloud-config:latest
+    image: flipperzer0/cloud-config:0.0.6
     ports:
       - "8888:8888"
     networks:
-      - spring-cloud-network
+      - chat-bot-test-network
+    environment:
+      - EUREKA_HOST=discovery-service
 
 networks:
-  spring-cloud-network:
+  chat-bot-test-network:
     driver: bridge
