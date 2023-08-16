@@ -3,17 +3,17 @@ services:
   discovery-service:
     container_name: discovery-service
     build:
-      context: /Users/artemtkachev/Documents/work_projects/chat-manager-eureka-discovery-server
+      context: ../discovery/
       dockerfile: Dockerfile
     image: flipperzer0/discovery-service:0.0.2
     ports:
       - "8761:8761"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
-      interval: 1m
+      interval: 5m
       timeout: 10s
       retries: 3
-      start_period: 2m
+      start_period: 10m
     networks:
       - chat-bot-test-network
   cloud-config:
